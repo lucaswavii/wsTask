@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <% include /templates/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini"> 
+    
+    <div class="wrapper">   
+        <% include /templates/header %>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    Cadastro de Empresa
+                    <small>Listagem</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> DASHBOARD</a></li>
+                    <li><a href="#">CADASTRO</a></li>
+                    <li class="active">EMPRESA</li>
+                </ol>
+            </section>
+    
+            <section class="content">
+
+                <!-- Default box -->
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">LISTA DE CADASTRO</h3>
+              
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                           
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <% for(var i = 0; i < validacao.length; i++) {%>
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <a href="#" class="alert-link">Ops!</a>.<%= validacao[i].msg %>
+                            </div>
+                        <% } %>
+                        
+                        <table id="grdDados" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Cnpj</th>
+                                    <th>Nome</th>
+                                    <th>Fone</th>
+                                    <th>E-mail</th>
+                                    <th>Ações</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (var i = 0; i < empresas.length; ++i) { %>
+                                    <tr class="odd gradeX">
+                                        <td><%= empresas[i].id %></td>
+                                        <td><%= empresas[i].cnpj %></td>
+                                        <td><%= empresas[i].nome %></td>
+                                        <td><%= empresas[i].fone %></td>
+                                        <td><%= empresas[i].email %></td>
+                                        <td class="center">   
+                                            <a href="/editarEmpresa/<%= empresas[i].id %>" class="btn btn-success btn-circle"><i class="fa fa-edit"></i></a>
+                                            <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#modal-danger"><i class="fa fa-minus-square"></i></button>                                                
+                                        </td>
+                                    </tr>
+                                    <div class="modal modal-danger fade" id="modal-danger">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title">Confirmação de Exclusão</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Confirma exclusão da Empresa?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                                    <a href="/excluirEmpresa/<%= empresas[i].id %>" class="btn btn-outline">Confirma</a>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
+                                <% } %>
+                            </tbody>    
+                        </table>
+                        
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <a href="/novoEmpresa" class="btn btn-info btn-circle"><i class="fa fa-plus-square"></i> Novo</a>
+                    </div>
+                    <!-- /.box-footer-->
+                </div>
+                <!-- /.box -->
+              
+            </section>
+            
+        </div>
+        <!-- /.content-wrapper -->     
+        <% include /templates/footer %>
+        
+    </div>
+    <% include /templates/scripts %>
+</body>
+</html>
