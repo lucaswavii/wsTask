@@ -10,4 +10,26 @@ module.exports = function(application){
     application.get('/empresa', function(req, res){		
         application.app.controllers.empresa.index(application, req, res);
     });  
+
+    application.get('/tipo', function(req, res){		
+        application.app.controllers.tipo.index(application, req, res);
+    });  
+    application.get('/grupo', function(req, res){		
+        application.app.controllers.grupo.index(application, req, res);
+    }); 
+    
+    application.get('/pessoa', function(req, res){		
+        application.app.controllers.pessoa.index(application, req, res);
+    }); 
+
+    application.get('/usuario', function(req, res){		
+        application.app.controllers.usuario.index(application, req, res);
+    });
+
+    application.get('/nivel', function(req, res){		
+        application.app.controllers.nivel.index(application, req, res);
+    });
+    application.get('/situacao', function(req, res){		
+        application.app.controllers.situacao.index(application, req, res);
+    });
 }

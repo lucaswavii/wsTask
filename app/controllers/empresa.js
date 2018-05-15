@@ -10,10 +10,10 @@ module.exports.index = function(application, req, res){
     empresaDao.listar(function(error, empresas){
         connection.end();
         if( error ) {
-            res.render('empresaListar', { validacao : [ {'msg': error }], empresas : {}, sessao: {} });
+            res.render('empresa', { validacao : [ {'msg': error }], empresas : {}, sessao: {} });
             return;
         }
-        res.render('empresaListar', { validacao : {}, empresas : empresas, sessao: {} });
+        res.render('empresa', { validacao : {}, empresas : empresas, sessao: {} });
     });
 }
 
@@ -74,36 +74,30 @@ module.exports.novo = function(application, req, res){
 
 module.exports.salvar = function( application, req, res ){
 
-   // if( req.session.usuario == undefined ) {
-	//	res.redirect("/login")			
-    //}
-    
-    var dadosForms = req.body;
-    req.assert('cnpj', 'cnpj é obrigatório').notEmpty();
-    req.assert('razao', 'Razão é obrigatório').notEmpty();       
-    req.assert('nome', 'Fantasia é obrigatório').notEmpty();       
-    
-    var erros = req.validationErrors();
-
-    if(erros){
-      
-        res.render('empresaListar', {validacao: erros,  empresas: {}, sessao: {}});
-        return;
-    }
-    if( !dadosForms.id ) {
-        dadosForms.id = 0;
-    } 
     var connection = application.config.dbConnection();
-    var empresaDao = new application.app.models.EmpresaDAO(connection);        
+    var empresaDao = new application.app.models.EmpresaDAO(connection);   
+    empresaDao.listar(function(error, empresas){
+        
+        var dadosForms = req.body;
+        req.assert('cnpj', 'cnpj é obrigatório').notEmpty();
+        req.assert('razao', 'Razão é obrigatório').notEmpty();       
+        req.assert('nome', 'Fantasia é obrigatório').notEmpty();       
+        var erros = req.validationErrors();
     
-    empresaDao.salvar(dadosForms, function(error, result){
-        connection.end();   
-        if( error ) {
-            res.render('empresaListar', { validacao : [ {'msg': error }], empresas : {}, sessao: {} });
+        if( erros ) {
+            res.render('empresa', {validacao: erros,  empresas: empresas, sessao: {}});
             return;
         }
-        res.redirect('/empresa');
-    });
-     
+
+        if(error){            
+            res.render('empresa', {validacao: error,  empresas: empresas, sessao: {}});
+            return;
+        }   
+        
+        empresaDao.salvar(dadosForms, function(error, result){
+            connection.end(); 
+            res.redirect('/empresa');
+        });
+    });      
 }
 

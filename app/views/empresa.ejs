@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include /templates/head %>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <div class="wrapper">
+        <% include /templates/header %>
+
+            <div class="content-wrapper">
+                <section class="content-header">
+                    <h1>
+                        EMPRESA
+                        <small>CADASTRO DE EMPRESA</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li class="active">
+                            <i class="fa fa-dashboard"></i> Principal</li>
+                    </ol>
+                </section>
+
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">LISTA DE EMPRESAS</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default-inserir">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div class="modal fade" id="modal-default-inserir">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title">Incluisão de Dados</h4>
+                                            </div>
+                                            <form role="form" action="/salvarEmpresa" method="post">
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Id</label>
+                                                            <input type="text" class="form-control" placeholder="id" required="true" readonly="true">
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Cnpj</label>
+                                                            <input type="text" name="cnpj" class="form-control" placeholder="Cnpj" required="true" maxlength="18">
+                                                        </div>
+                                                        <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Fantasia</label>
+                                                            <input type="text" name="nome" class="form-control" placeholder="Nome" required="true" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Razão</label>
+                                                            <input type="text" name="razao" class="form-control" placeholder="Razão" required="true" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Fone</label>
+                                                            <input type="text" name="fone" class="form-control" placeholder="Fone" maxlength="30">
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">E-mail</label>
+                                                            <input type="text" name="email" class="form-control" placeholder="E-mail" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <label for="exampleInputEmail1">Cep</label>
+                                                            <input type="text" name="cep" class="form-control" placeholder="Cep" maxlength="9">
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Endereço</label>
+                                                            <input type="text" name="endereco" class="form-control" placeholder="Endereço" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <label for="exampleInputEmail1">Número</label>
+                                                            <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="30">
+                                                        </div>
+                                                        <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Complemento</label>
+                                                            <input type="text" name="complemento" class="form-control" placeholder="Complemento" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Uf</label>
+                                                            <input type="text" name="uf" class="form-control" placeholder="Uf" maxlength="2">
+                                                        </div>
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Cidade</label>
+                                                            <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="200">
+                                                        </div>
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Bairro</label>
+                                                            <input type="text" name="bairro" class="form-control" placeholder="Bairro" maxlength="200">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/empresa'">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <% if ( empresas.length ) { %>
+                                <table id="grade" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Fantasia</th>
+                                            <th>Razão</th>
+                                            <th>Editar/Excluir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% for( var i = 0; i < empresas.length; i ++ ) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= empresas[i].id %>
+                                                </td>
+                                                <td>
+                                                    <%= empresas[i].nome %>
+                                                </td>
+                                                <td>
+                                                    <%= empresas[i].razao %>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default-editar-<%= empresas[i].id %>">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-remove-<%= empresas[i].id %>">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <div class="modal fade" id="modal-default-editar-<%= empresas[i].id %>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                            <form role="form" action="/salvarEmpresa" method="post">
+                                            
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <h4 class="modal-title">Edição de Dados</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Id</label>
+                                                                            <input type="text" name="id" class="form-control" placeholder="id" required="true" readonly="true" value="<%= empresas[i].id %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Cnpj</label>
+                                                                            <input type="text" name="cnpj" class="form-control" placeholder="Cnpj" required="true" maxlength="18" value="<%= empresas[i].cnpj %>">
+                                                                        </div>
+                                                                        <div class="col-xs-12">
+                                                                            <label for="exampleInputEmail1">Fantasia</label>
+                                                                            <input type="text" name="nome" class="form-control" placeholder="Nome" required="true" maxlength="200" value="<%= empresas[i].nome %>">
+                                                                        </div>
+                                                                        <div class="col-xs-12">
+                                                                            <label for="exampleInputEmail1">Razão</label>
+                                                                            <input type="text" name="razao" class="form-control" placeholder="Razão" required="true" maxlength="200" value="<%= empresas[i].razao %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Fone</label>
+                                                                            <input type="text" name="fone" class="form-control" placeholder="Fone" maxlength="30" value="<%= empresas[i].fone %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">E-mail</label>
+                                                                            <input type="text" name="email" class="form-control" placeholder="E-mail" maxlength="200" value="<%= empresas[i].email %>">
+                                                                        </div>
+                                                                        <div class="col-xs-3">
+                                                                            <label for="exampleInputEmail1">Cep</label>
+                                                                            <input type="text" name="cep" class="form-control" placeholder="Cep" maxlength="9" value="<%= empresas[i].cep %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Endereço</label>
+                                                                            <input type="text" name="endereco" class="form-control" placeholder="Endereço" maxlength="200" value="<%= empresas[i].endereco %>">
+                                                                        </div>
+                                                                        <div class="col-xs-3">
+                                                                            <label for="exampleInputEmail1">Número</label>
+                                                                            <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="30" value="<%= empresas[i].numero %>">
+                                                                        </div>
+                                                                        <div class="col-xs-12">
+                                                                            <label for="exampleInputEmail1">Complemento</label>
+                                                                            <input type="text" name="complemento" class="form-control" placeholder="Complemento" maxlength="200" value="<%= empresas[i].complemento %>">
+                                                                        </div>
+                                                                        <div class="col-xs-4">
+                                                                            <label for="exampleInputEmail1">Uf</label>
+                                                                            <input type="text" name="uf" class="form-control" placeholder="Uf" maxlength="2" value="<%= empresas[i].uf %>">
+                                                                        </div>
+                                                                        <div class="col-xs-4">
+                                                                            <label for="exampleInputEmail1">Cidade</label>
+                                                                            <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="200" value="<%= empresas[i].cidade %>">
+                                                                        </div>
+                                                                        <div class="col-xs-4">
+                                                                            <label for="exampleInputEmail1">Bairro</label>
+                                                                            <input type="text" name="bairro" class="form-control" placeholder="Bairro" maxlength="200" value="<%= empresas[i].bairro %>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/empresa'">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                </div>                                                                
+                                                            </form>
+
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
+                                            <div class="modal modal-danger fade" id="modal-danger-remove-<%= empresas[i].id %>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form role="form" action="/excluirEmpresa/<%=  empresas[i].id   %>" method="GET">
+                                            
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Exclusão de Registro</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Deseja realmente excluír o registro?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="window.location.href='/empresa'">Não</button>
+                                                                <button type="submit" class="btn btn-outline">Sim</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
+                                        <% } %>
+                                           
+                                    </tbody>
+                                </table>
+                                <% } %>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            LISTA DE EMPRESAS
+                        </div>
+                        <!-- /.box-footer-->
+                    </div>
+
+                </section>
+            </div>
+            <% include /templates/footer %>
+            <div class="control-sidebar-bg"></div>
+    </div>
+    <% include /templates/scripts %>
+</body>
+
+</html>

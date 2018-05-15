@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Portal CDV</title>
+<title>WSTASK</title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <!-- Bootstrap 3.3.7 -->
@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
 <!-- Ionicons -->
 <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
-<!-- DataTables -->
-<link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">  
 <!-- Theme style -->
 <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
 <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
@@ -23,30 +23,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-<script type="text/javascript" src="jquery.dataTables.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#grdDados').dataTable( {
-            "language": {
-                "url": 'https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json'
-            }
-        } );
-    } );
-</script>
-<script>
-    $(function () {
-        $('#grdDados').DataTable()
-        $('#grdDados').DataTable({
-        'paging'      : true,
-        'lengthChange': false,
-        'searching'   : true,
-        'ordering'    : true,
-        'info'        : true,
-        'autoWidth'   : false
-        })
-    })
-</script>
-      
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
