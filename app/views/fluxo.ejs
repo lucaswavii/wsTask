@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include /templates/head %>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <div class="wrapper">
+        <% include /templates/header %>
+
+            <div class="content-wrapper">
+                <section class="content-header">
+                    <h1>
+                        FLUXO
+                        <small>CADASTRO DE FLUXOS</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li class="active">
+                            <i class="fa fa-dashboard"></i> Principal</li>
+                    </ol>
+                </section>
+
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">LISTA DE FLUXOS</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default-inserir">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div class="modal fade" id="modal-default-inserir">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title">Incluisão de Dados</h4>
+                                            </div>
+                                            <form role="form" action="/salvarFluxo" method="post">
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Id</label>
+                                                            <input type="text" class="form-control" placeholder="id" required="true" readonly="true">
+                                                        </div>
+                                                        
+                                                        <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Nome</label>
+                                                            <input type="text" name="nome" class="form-control" placeholder="Nome" required="true" maxlength="200">
+                                                        </div>     
+                                                        
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Início</label>
+                                                            <input type="date" name="inicio" class="form-control" placeholder="Data Inicio" required="true" maxlength="10">
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <label for="exampleInputEmail1">Fim</label>
+                                                            <input type="date" name="fim" class="form-control" placeholder="Data Fim" maxlength="10">
+                                                        </div>        
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/fluxo'">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </div>
+                        </div>
+                        <% function leftPad(value, totalWidth, paddingChar) { %>
+                            <%  var length = totalWidth - value.toString().length + 1; %>
+                            <%    return Array(length).join(paddingChar || '0') + value; %>
+                            <%  }; %>
+                            <% var now = new Date() %>
+                            <% var hoje = leftPad(now.getDate(), 2) + '/' + leftPad((now.getMonth() + 1), 2) + '/' +  leftPad(now.getFullYear(), 4) %>
+                            <% var hora = leftPad(now.getHours(),2) + ":" + leftPad(now.getMinutes(),2) %>
+                            <% var hoje = leftPad(now.getFullYear(), 4) + '-' + leftPad((now.getMonth() + 1), 2)  + '-' +   leftPad(now.getDate(), 2)   %>
+                            
+                            <% function getFormattedDate(date) { %>
+                            <%  var year = date.getFullYear(); %>
+                            <%  var month = (1 + date.getMonth()).toString(); %>
+                            <%  month = month.length > 1 ? month : '0' + month; %>
+                            <%  var day = date.getDate().toString(); %>
+                            <%  day = day.length > 1 ? day : '0' + day; %>
+                            <%  return  year  + '-' + month + '-' + day; %>
+                            <% } %>
+                        <div class="box-body">
+                            <% if ( fluxos.length ) { %>
+                                <table id="grade" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>                                            
+                                            <th>Nome</th>
+                                            <th>Início</th>
+                                            <th>Fim</th>
+                                            <th>Editar/Excluir/Fluxo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% for( var i = 0; i < fluxos.length; i ++ ) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= fluxos[i].id %>
+                                                </td>
+                                                <td>
+                                                    <%= fluxos[i].nome %>
+                                                </td>
+                                                <td>
+                                                    <%= fluxos[i].inicio ? getFormattedDate(fluxos[i].inicio) : ''  %>
+                                                </td>
+                                                <td>
+                                                    <%= fluxos[i].fim ? getFormattedDate(fluxos[i].fim) : '' %>
+                                                </td>
+                                               
+                                                <td>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default-editar-<%= fluxos[i].id %>">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-remove-<%= fluxos[i].id %>">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-danger-fluxo-<%= fluxos[i].id %>">
+                                                        <i class="fa fa-code-fork"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <div class="modal fade" id="modal-default-editar-<%= fluxos[i].id %>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                            <form role="form" action="/salvarFluxo" method="post">
+                                            
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <h4 class="modal-title">Edição de Dados</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Id</label>
+                                                                            <input type="text" name="id" class="form-control" placeholder="id" required="true" readonly="true" value="<%= fluxos[i].id %>">
+                                                                        </div>
+                                                                       
+                                                                        <div class="col-xs-12">
+                                                                            <label for="exampleInputEmail1">Nome</label>
+                                                                            <input type="text" name="nome" class="form-control" placeholder="Nome" required="true" maxlength="200" value="<%= fluxos[i].nome %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Início</label>
+                                                                            <input type="date" name="inicio" class="form-control" placeholder="Data Inicio" required="true" maxlength="10" value="<%= fluxos[i].inicio ? getFormattedDate(fluxos[i].inicio) : ''  %>">
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <label for="exampleInputEmail1">Fim</label>
+                                                                            <input type="date" name="fim" class="form-control" placeholder="Data Fim" maxlength="10" value="<%= fluxos[i].fim ? getFormattedDate(fluxos[i].fim) : ''  %>">
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/fluxo'">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                </div>                                                                
+                                                            </form>
+
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
+                                            <div class="modal modal-danger fade" id="modal-danger-remove-<%= fluxos[i].id %>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form role="form" action="/excluirFluxo/<%=  fluxos[i].id   %>" method="GET">
+                                            
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Exclusão de Registro</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Deseja realmente excluír o registro?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="window.location.href='/fluxo'">Não</button>
+                                                                <button type="submit" class="btn btn-outline">Sim</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
+                                        <% } %>
+                                           
+                                    </tbody>
+                                </table>
+                                <% } %>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            LISTA DE FLUXOS
+                        </div>
+                        <!-- /.box-footer-->
+                    </div>
+
+                </section>
+            </div>
+            <% include /templates/footer %>
+            <div class="control-sidebar-bg"></div>
+    </div>
+    <% include /templates/scripts %>
+</body>
+
+</html>

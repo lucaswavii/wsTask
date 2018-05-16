@@ -29,7 +29,12 @@ module.exports = function(application){
     application.get('/nivel', function(req, res){		
         application.app.controllers.nivel.index(application, req, res);
     });
+
     application.get('/situacao', function(req, res){		
         application.app.controllers.situacao.index(application, req, res);
+    });
+
+    application.get('/fluxo', function(req, res){		
+        application.app.controllers.fluxo.index(application, req, res);
     });
 }
