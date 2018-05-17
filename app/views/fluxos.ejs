@@ -35,13 +35,95 @@
                                         <option value="<%= fluxos[e].id %>"> <%= fluxos[e].nome %> </option>
                                     <% } %>                                                                
                                 </select>
-                            </div>                                          
-    
+                            </div>   
+                        </div>
+                        </br>
+                        <div class="row">    
+                            <div class="col-xs-12">
+                                <table id="grade" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>                                            
+                                                <th>Situação</th>
+                                                <th>Situações</th>
+                                                <th>Tipo</th>
+                                                <th>Editar/Excluir</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% for( var i = 0; i < listaFluxos.length; i ++ ) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= listaFluxos[i].id %>
+                                                    </td>
+                                                    <td>
+                                                        <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                            <% if( situacoes[e].id == listaFluxos[i].situacao ) { %>
+                                                                <%= situacoes[e].nome %>
+                                                            <% } %>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% var lista = listaFluxos[i].situacoes.split(",")   %>
+                                                        <% for( var e = 0; e < lista.length; e++ ) { %>
+                                                            
+                                                            <% for( var s = 0; s < situacoes.length; s++ ) { %>
+                                                                <% if( lista[e] == situacoes[s].id ) { %>
+                                                                    <%= situacoes[s].nome %></br>
+                                                                <% } %>
+                                                            <% } %>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <%= listaFluxos[i].tipo == 1 ? 'Evento' : listaFluxos[i].tipo == 2 ? 'Início' : 'Fim'  %>
+                                                    </td>
+                                                
+                                                    <td>                                                       
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-remove-<%= listaFluxos[i].id %>">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                         <!-- /.modal -->
+                                                        <div class="modal modal-danger fade" id="modal-danger-remove-<%= listaFluxos[i].id %>">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <form role="form" action="/excluirFluxos/<%=  listaFluxos[i].id   %>" method="GET">
+                                                        
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span></button>
+                                                                            <h4 class="modal-title">Exclusão de Registro</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Deseja realmente excluír o registro?</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="window.location.href='/fluxo'">Não</button>
+                                                                            <button type="submit" class="btn btn-outline">Sim</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <!-- /.modal-content -->
+                                                            </div>
+                                                            <!-- /.modal-dialog -->
+                                                        </div>
+                                                        <!-- /.modal -->
+                                                    </td>
+                                                </tr>
+                                        
+                                            <% } %>
+                                            
+                                        </tbody>
+                                </table>                                      
+                            </div>
                         </div>
                     </div>
                     <div class="box-footer">
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default-inserir">
                             <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="window.location.href='/fluxo'">
+                            <i class="fa fa-sign-in"></i>
                         </button>
                         <div class="modal fade" id="modal-default-inserir">
                                 <div class="modal-dialog">
@@ -52,7 +134,7 @@
                                             </button>
                                             <h4 class="modal-title">Incluisão de Dados</h4>
                                         </div>
-                                        <form role="form" action="/salvarFluxo" method="post">
+                                        <form role="form" action="/salvarFluxos" method="post">
 
                                             <div class="modal-body">
                                                 <div class="row">
@@ -82,17 +164,13 @@
                                                         </select>
                                                     </div>  
                                                     <div class="col-xs-6">
-                                                        <label>Situações</label>
-                                                        
-                                                        <label>
-                                                        <input type="radio" name="r1" class="minimal" checked>
-                                                        </label>
-                                                        <label>
-                                                        <input type="radio" name="r1" class="minimal">
-                                                        </label>
-                                                        
-                                                    </div>
-                                    
+                                                        <label>Tipo</label>
+                                                        <select class="form-control"  style="width: 100%;" name="tipo">
+                                                            <option value="1">Evento</option>
+                                                            <option value="2">Início</option>
+                                                            <option value="3">Fim</option>                           
+                                                        </select>
+                                                    </div>                                     
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -104,8 +182,8 @@
                                     <!-- /.modal-content -->
                                 </div>
                                 <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
+                        </div>
+                        <!-- /.modal -->
                         
                     </div>
                     

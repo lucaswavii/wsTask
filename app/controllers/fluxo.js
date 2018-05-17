@@ -28,15 +28,27 @@ module.exports.editar = function( application, req, res ){
     var situacaoDao = new application.app.models.SituacaoDAO(connection);
     situacaoDao.listar(function(error, situacoes ){
         fluxoDao.editar( req.params._id, function(error, fluxos){
-            connection.end();
-            if( error ) {
-                res.render('fluxos', { validacao : [ {'msg': error }], fluxos : {}, situacoes: {}, sessao: {} });
-                return;
-            }
-            res.render('fluxos', { validacao : {}, fluxos : fluxos, situacoes: situacoes, sessao: req.session.usuario });
+            fluxoDao.listarFluxos(function(error, listaFluxos){
+                connection.end();
+                if( error ) {
+                    res.render('fluxos', { validacao : [ {'msg': error }], fluxos : {}, situacoes: {}, listaFluxos: listaFluxos, sessao: {} });
+                    return;
+                }
+                res.render('fluxos', { validacao : {}, fluxos : fluxos, situacoes: situacoes, listaFluxos: listaFluxos, sessao: req.session.usuario });
+        
+            });
         });
     });
 }
+module.exports.excluirFluxos = function( application, req, res ){
+ 
+    var connection = application.config.dbConnection();
+    var fluxoDao = new application.app.models.FluxoDAO(connection);
+    fluxoDao.excluirFluxos( req.params._id, function(error, fluxos){
+        res.redirect('/editarFluxo/' + fluxo.fluxo );
+    });
+}
+
 
 module.exports.excluir = function( application, req, res ){
     
@@ -64,14 +76,25 @@ module.exports.excluir = function( application, req, res ){
     });
 }
 
+module.exports.salvarFluxos = function( application, req, res ){
+    var connection = application.config.dbConnection();
+    var fluxoDao = new application.app.models.FluxoDAO(connection); 
+    
+    fluxoDao.listar(function(error, fluxos){
+        var dadosForms = req.body;
+        
+        if( dadosForms.situacoes.length > 1 ) {
+            var predecessoras = dadosForms.situacoes.join(',');
+            dadosForms.situacoes = predecessoras;
+        }
 
-module.exports.novo = function(application, req, res){
-	
-	//if( req.session.usuario == undefined ) {
-	//	res.redirect("login")			
-	//}
-
-	res.render('grupoEditar', { validacoes: {}, sessao: {} });
+     
+        fluxoDao.salvarFluxos(dadosForms, function(error, result){
+            console.log(error)
+            connection.end(); 
+            res.redirect('/editarFluxo/' + dadosForms.fluxo );
+        });   
+    });
 }
 
 module.exports.salvar = function( application, req, res ){

@@ -7,10 +7,19 @@ module.exports = function(application){
         application.app.controllers.fluxo.salvar(application, req, res);
     });  
 
+    application.post('/salvarFluxos', function(req, res){	
+        application.app.controllers.fluxo.salvarFluxos(application, req, res);
+    });  
+
     application.get('/editarFluxo/:_id', function(req, res){
         application.app.controllers.fluxo.editar(application, req, res);
     });
 
+    application.get('/excluirFluxos/:_id', function(req, res){
+        application.app.controllers.fluxo.excluirFluxos(application, req, res);
+    });
+
+    
     application.get('/excluirFluxo/:_id', function(req, res){
         application.app.controllers.fluxo.excluir(application, req, res);
     });

@@ -15,6 +15,18 @@ FluxoDAO.prototype.salvar = function( fluxo, callback) {
 	}
 }
 
+FluxoDAO.prototype.salvarFluxos = function( fluxos, callback) {	
+	this._connection.query('insert into fluxo_situacao set ?', fluxos, callback);
+}
+
+FluxoDAO.prototype.listarFluxos = function( callback) {	
+	this._connection.query('select * from fluxo_situacao order by ordem', callback);	
+}
+
+FluxoDAO.prototype.excluirFluxos = function( id, callback) {	
+	this._connection.query('delete from fluxo_situacao where id = ?', id, callback);	
+}
+
 FluxoDAO.prototype.editar = function( id, callback) {
 	this._connection.query('select * from fluxo where id = ?', id, callback);
 }

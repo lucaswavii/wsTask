@@ -168,7 +168,7 @@
                                                                             <label>Pessoa</label>
                                                                             <select class="form-control select2" style="width: 100%;" name="pessoa">
                                                                                 <% for( var e = 0; e < pessoas.length; e++ ) { %>
-                                                                                    <% if( empresas[e].id == usuarios[i].pessoa ) { %>
+                                                                                    <% if( pessoas[e].id == usuarios[i].pessoa ) { %>
                                                                                         <option value="<%= pessoas[e].id %>" selected="selected" > <%= pessoas[e].nome %> </option>
                                                                                     <% } else { %>
                                                                                         <option value="<%= pessoas[e].id %>"> <%= pessoas[e].nome %> </option>
