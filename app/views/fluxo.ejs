@@ -129,9 +129,11 @@
                                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-remove-<%= fluxos[i].id %>">
                                                         <i class="fa fa-times"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-danger-fluxo-<%= fluxos[i].id %>">
+                                                    <a class="btn btn-info" href=/editarFluxo/<%= fluxos[i].id %>>
                                                         <i class="fa fa-code-fork"></i>
-                                                    </button>
+                                                    </a>
+                                                    
+                                                   
                                                 </td>
                                             </tr>
                                             <div class="modal fade" id="modal-default-editar-<%= fluxos[i].id %>">

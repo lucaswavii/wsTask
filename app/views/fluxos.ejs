@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <% include /templates/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini"> 
+    
+    <div class="wrapper">   
+        <% include /templates/header %>
+        
+        <div class="content-wrapper">            
+            <section class="content-header">
+                <h1>
+                    Cadastro de Fluxos
+                    <small>Atividades de Fluxo</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Principal</li>
+                </ol>
+            </section>
+         
+            <section class="content">   
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">LISTA DE FLUXOS</h3>
+                        <div class="box-tools pull-right">
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label>Fluxo</label>
+                                <select class="form-control" style="width: 100%;" name="fluxo" readonly="true">
+                                    <% for( var e = 0; e < fluxos.length; e++ ) { %>
+                                        <option value="<%= fluxos[e].id %>"> <%= fluxos[e].nome %> </option>
+                                    <% } %>                                                                
+                                </select>
+                            </div>                                          
+    
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default-inserir">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <div class="modal fade" id="modal-default-inserir">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title">Incluisão de Dados</h4>
+                                        </div>
+                                        <form role="form" action="/salvarFluxo" method="post">
+
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <label>Fluxo</label>
+                                                        <select class="form-control" style="width: 100%;" name="fluxo" readonly="true" required="true">
+                                                            <% for( var e = 0; e < fluxos.length; e++ ) { %>
+                                                                <option value="<%= fluxos[e].id %>"> <%= fluxos[e].nome %> </option>
+                                                            <% } %>                                                                
+                                                        </select>
+                                                    </div>                                          
+                                                    <div class="col-xs-6">
+                                                        <label>Situação</label>
+                                                        <select class="form-control" style="width: 100%;" name="situacao" required="true" name="situacao">
+                                                            <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                                <option value="<%= situacoes[e].id %>"> <%= situacoes[e].nome %> </option>
+                                                            <% } %>                                                                
+                                                        </select>
+                                                    </div>                                          
+                                                    <div class="col-xs-6">
+                                                        <label>Situações</label>
+                                                        <select class="form-control select2" multiple="multiple" data-placeholder="Selecione Situações" style="width: 100%;" name="situacoes">
+                
+                                                            <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                                <option value="<%= situacoes[e].id %>"> <%= situacoes[e].nome %> </option>
+                                                            <% } %>                                                                
+                                                        </select>
+                                                    </div>  
+                                                    <div class="col-xs-6">
+                                                        <label>Situações</label>
+                                                        
+                                                        <label>
+                                                        <input type="radio" name="r1" class="minimal" checked>
+                                                        </label>
+                                                        <label>
+                                                        <input type="radio" name="r1" class="minimal">
+                                                        </label>
+                                                        
+                                                    </div>
+                                    
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/fluxo'">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+                        
+                    </div>
+                    
+                </div>
+                
+            </section>        
+        </div>
+         
+        <% include /templates/footer %>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <% include /templates/scripts %>
+</body>
+</html>

@@ -24,15 +24,17 @@ module.exports.editar = function( application, req, res ){
     //}
     
     var connection = application.config.dbConnection();
-    var grupoDao = new application.app.models.GrupoDAO(connection);
-    
-    grupoDao.editar( req.params._id, function(error, fluxos){
-        connection.end();
-        if( error ) {
-            res.render('grupo', { validacao : [ {'msg': error }], fluxos : {}, sessao: {} });
-            return;
-        }
-        res.render('grupo', { validacao : {}, fluxos : fluxos, sessao: req.session.usuario });
+    var fluxoDao = new application.app.models.FluxoDAO(connection);
+    var situacaoDao = new application.app.models.SituacaoDAO(connection);
+    situacaoDao.listar(function(error, situacoes ){
+        fluxoDao.editar( req.params._id, function(error, fluxos){
+            connection.end();
+            if( error ) {
+                res.render('fluxos', { validacao : [ {'msg': error }], fluxos : {}, situacoes: {}, sessao: {} });
+                return;
+            }
+            res.render('fluxos', { validacao : {}, fluxos : fluxos, situacoes: situacoes, sessao: req.session.usuario });
+        });
     });
 }
 
