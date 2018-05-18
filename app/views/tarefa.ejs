@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include /templates/head %>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <div class="wrapper">
+        <% include /templates/header %>
+
+            <div class="content-wrapper">
+                <section class="content-header">
+                    <h1>
+                        TAREFA
+                        <small>TAREFA DE SUPORTE</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li class="active">
+                            <i class="fa fa-dashboard"></i> Principal</li>
+                    </ol>
+                </section>
+
+                <% function leftPad(value, totalWidth, paddingChar) { %>
+                    <%  var length = totalWidth - value.toString().length + 1; %>
+                    <%    return Array(length).join(paddingChar || '0') + value; %>
+                    <%  }; %>
+                    <% var now = new Date() %>
+                    <% var hoje = leftPad(now.getDate(), 2) + '/' + leftPad((now.getMonth() + 1), 2) + '/' +  leftPad(now.getFullYear(), 4) %>
+                    <% var hora = leftPad(now.getHours(),2) + ":" + leftPad(now.getMinutes(),2) %>
+                    <% var hoje = leftPad(now.getFullYear(), 4) + '-' + leftPad((now.getMonth() + 1), 2)  + '-' +   leftPad(now.getDate(), 2)   %>
+                    
+                    <% function getFormattedDate(date) { %>
+                        <%  var year = date.getFullYear(); %>
+                        <%  var month = (1 + date.getMonth()).toString(); %>
+                        <%  month = month.length > 1 ? month : '0' + month; %>
+                        <%  var day = date.getDate().toString(); %>
+                        <%  day = day.length > 1 ? day : '0' + day; %>
+                        <%  return  year  + '-' + month + '-' + day; %>
+                    <% } %>
+
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">LISTA DE TAREFAS</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default-inserir">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div class="modal fade" id="modal-default-inserir">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title">NOVA TAREFA</h4>
+                                            </div>
+                                            <form role="form" action="/salvarTarefa" method="post">
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Id</label>
+                                                            <input type="text" class="form-control" placeholder="id" required="true" readonly="true">
+                                                        </div>
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Data</label>
+                                                            <input type="date" name="data" class="form-control" placeholder="Data" required="true" maxlength="10" value="<%= hoje %>">
+                                                        </div>
+                                                        <div class="col-xs-4">
+                                                            <label for="exampleInputEmail1">Hora</label>
+                                                            <input type="time" name="hora" class="form-control" placeholder="Hora" required="true" maxlength="5" value="<%= hora %>">
+                                                        </div>
+                                                       
+                                                        <div class="col-xs-12">
+                                                            <label>Cliente</label>
+                                                            <select class="form-control select2" name="cliente" style="width: 100%;">
+                                                                <% for( var e = 0; e < pessoas.length; e++ ) { %>
+                                                                    <option value="<%= pessoas[e].id %>"><%= pessoas[e].nome %></option>
+                                                                
+                                                                <% } %>
+                                                            
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-xs-4">
+                                                            <label>Fluxo</label>
+                                                            <select class="form-control select2" name="fluxo" style="width: 100%;">
+                                                                <% for( var e = 0; e < fluxos.length; e++ ) { %>
+                                                                    <option value="<%= fluxos[e].id %>"><%= fluxos[e].nome %></option>
+                                                                
+                                                                <% } %>
+                                                            
+                                                            </select>
+                                                        </div>
+                                                    
+                                                        
+                                                        <div class="col-xs-4">
+                                                            <label>Situação</label>
+                                                            <select class="form-control select2" name="situacao" style="width: 100%;">
+                                                                
+                                                                <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                                    <% if ( fluxo.situacoes.indexOf( situacoes[e].id ) >= 0 ) { %>
+                                                                        <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
+                                                                    <% } %>
+                                                                <% } %>
+                                                            
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-xs-4">
+                                                            <label>Nível</label>
+                                                            <select class="form-control select2" name="nivel" style="width: 100%;">
+                                                                <% for( var e = 0; e < niveis.length; e++ ) { %>
+                                                                    <option value="<%= niveis[e].id %>"><%= niveis[e].nome %></option>
+                                                                
+                                                                <% } %>
+                                                            
+                                                            </select>
+                                                        </div>
+                                                         <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Título</label>
+                                                            <input type="text" name="titulo" class="form-control" placeholder="Descreva o título da tarefa" maxlength="200">
+                                                        </div>
+                                                       
+                                                        <div class="col-xs-12">
+                                                            <label for="exampleInputEmail1">Descrição</label>
+                                                            <textarea class="form-control" name="descricao", id="descricao"  rows="6"></textarea>
+                                
+                                                        </div>
+                                                         <div class="col-xs-12">
+                                                            <label>Usuário Criador</label>
+                                                            <select class="form-control select2" name="usuario" style="width: 100%;">
+                                                                <% for( var e = 0; e < usuarios.length; e++ ) { %>
+                                                                    <option value="<%= usuarios[e].id %>"><%= usuarios[e].nome %></option>
+                                                                
+                                                                <% } %>
+                                                            
+                                                            </select>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/tarefa'">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <% if ( tarefas.length ) { %>
+                                <table id="grade" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Data</th>
+                                            <th>Hora</th>
+                                            <th>Título</th>
+                                            <th>Siuação</th>
+                                            <th>Nível</th>
+                                            <th>Cliente</th>
+                                            <th>Criado Por</th>
+                                            
+                                            <th>Ver/Apontar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% for( var i = 0; i < tarefas.length; i ++ ) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= tarefas[i].id %>
+                                                </td>
+                                                <td>
+                                                    <%= getFormattedDate(tarefas[i].data) %>
+                                                </td>
+                                                <td>
+                                                    <%= tarefas[i].hora %>
+                                                </td>
+                                                <td>
+                                                    <%= tarefas[i].titulo %>
+                                                </td>
+                                                <td>
+                                                    <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                        <% if( situacoes[e].id == tarefas[i].situacao ) { %>
+                                                            <%= situacoes[e].nome %>
+                                                        <% } %>                                                        
+                                                    <% } %>
+                                                </td>
+
+                                                <td>
+                                                    <% for( var e = 0; e < niveis.length; e++ ) { %>
+                                                        <% if( niveis[e].id == tarefas[i].nivel ) { %>
+                                                            <%= niveis[e].nome %>
+                                                        <% } %>                                                        
+                                                    <% } %>
+                                                </td>
+
+                                                <td>
+                                                    <% for( var e = 0; e < pessoas.length; e++ ) { %>
+                                                        <% if( pessoas[e].id == tarefas[i].cliente ) { %>
+                                                            <%= pessoas[e].nome %>
+                                                        <% } %>                                                        
+                                                    <% } %>
+                                                    
+                                                </td>
+                                                
+                                                <td>
+                                                    <% for( var e = 0; e < usuarios.length; e++ ) { %>
+                                                        <% if( usuarios[e].id == tarefas[i].usuario ) { %>
+                                                            <%= usuarios[e].nome %>
+                                                        <% } %>                                                        
+                                                    <% } %>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default-visualizar-<%= tarefas[i].id %>">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>        
+                                                    <a class="btn btn-success" href='/editarTarefa/<%= tarefas[i].id %>'>
+                                                        <i class="glyphicon glyphicon-edit icon-white"></i>
+                                                    </a>                                            
+                                                   
+                                                </td>
+                                            </tr>
+                                            <div class="modal fade" id="modal-default-visualizar-<%= tarefas[i].id %>">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <h4 class="modal-title">VISUALIZAR TAREFA</h4>
+                                                            </div>                                                               
+
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-xs-4">
+                                                                        <label for="exampleInputEmail1">Id</label>
+                                                                        <input type="text" class="form-control" placeholder="id" required="true" readonly="true" value="<%= tarefas[i].id %>">
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <label for="exampleInputEmail1">Data</label>
+                                                                        <input type="date" name="data" class="form-control" placeholder="Data" required="true" maxlength="10" value="<%= tarefas[i].data ? getFormattedDate(tarefas[i].data) : hoje %>" readonly="true">
+                                                                    </div>
+                                                                    <div class="col-xs-4">
+                                                                        <label for="exampleInputEmail1">Hora</label>
+                                                                        <input type="time" name="hora" class="form-control" placeholder="Hora" required="true" maxlength="5" value="<%= tarefas[i].hora %>" readonly="true">
+                                                                    </div>
+                                                                
+                                                                    <div class="col-xs-12">
+                                                                        <label>Cliente</label>
+                                                                        <select class="form-control select2" name="cliente" style="width: 100%;" readonly="true" disabled="disabled">
+                                                                            <% for( var e = 0; e < pessoas.length; e++ ) { %>
+                                                                                <% if( pessoas[e].id == tarefas[i].cliente ) { %>
+                                                                                <option value="<%= pessoas[e].id %>"><%= pessoas[e].nome %></option>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                        
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="col-xs-4">
+                                                                        <label>Fluxo</label>
+                                                                        <select class="form-control select2" name="fluxo" style="width: 100%;" disabled="disabled">
+                                                                            <% for( var e = 0; e < fluxos.length; e++ ) { %>
+                                                                                <% if( fluxos[e].id == tarefas[i].fluxo ) { %>
+                                                                                <option value="<%= fluxos[e].id %>"><%= fluxos[e].nome %></option>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                        
+                                                                        </select>
+                                                                    </div>
+                                                                
+                                                                    
+                                                                    <div class="col-xs-4">
+                                                                        <label>Situação</label>
+                                                                        <select class="form-control select2" name="situacao" style="width: 100%;" disabled="disabled">
+                                                                            <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                                                                <% if( situacoes[e].id == tarefas[i].situacao ) { %>
+                                                                                <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                        
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="col-xs-4">
+                                                                        <label>Nível</label>
+                                                                        <select class="form-control select2" name="nivel" style="width: 100%;" disabled="disabled">
+                                                                            <% for( var e = 0; e < niveis.length; e++ ) { %>
+                                                                                <% if( niveis[e].id == tarefas[i].nivel ) { %>
+                                                                                <option value="<%= niveis[e].id %>"><%= niveis[e].nome %></option>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                        
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-xs-12">
+                                                                        <label for="exampleInputEmail1">Título</label>
+                                                                        <input type="text" name="titulo" class="form-control" placeholder="Descreva o título da tarefa" maxlength="200"  readonly="true"  value="<%= tarefas[i].titulo %>">
+                                                                    </div>
+                                                                
+                                                                    <div class="col-xs-12">
+                                                                        <label for="exampleInputEmail1">Descrição</label>
+                                                                        <textarea class="form-control" name="descricao", id="descricao"  rows="6"  readonly="true"><%= tarefas[i].descricao %></textarea>
+                                            
+                                                                    </div>
+                                                                    <div class="col-xs-12">
+                                                                        <label>Usuário Criador</label>
+                                                                        <select class="form-control select2" name="usuario" style="width: 100%;" disabled="disabled">
+                                                                            <% for( var e = 0; e < usuarios.length; e++ ) { %>
+                                                                                <% if( usuarios[e].id == tarefas[i].usuario ) { %>
+                                                                                <option value="<%= usuarios[e].id %>"><%= usuarios[e].nome %></option>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                        
+                                                                        </select>
+                                                                    </div>
+                                                                    </br>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <ul class="timeline">
+
+                                                                    <!-- timeline time label -->
+                                                                    <li class="time-label">
+                                                                        <span class="bg-red">
+                                                                            10 Feb. 2014
+                                                                        </span>
+                                                                    </li>
+                                                                    <!-- /.timeline-label -->
+                                                                
+                                                                    <!-- timeline item -->
+                                                                    <li>
+                                                                        <!-- timeline icon -->
+                                                                        <i class="fa fa-envelope bg-blue"></i>
+                                                                        <div class="timeline-item">
+                                                                            <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                                                                
+                                                                            <h3 class="timeline-header"><a href="#">Support Team</a> ...</h3>
+                                                                
+                                                                            <div class="timeline-body">
+                                                                                ...
+                                                                                Content goes here
+                                                                            </div>
+                                                                
+                                                                            <div class="timeline-footer">
+                                                                                <a class="btn btn-primary btn-xs">...</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <!-- END timeline item -->
+                                                                
+                                                                    ...
+                                                                
+                                                                </ul>
+                                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="window.location.href='/tarefa'">Fechar</button>
+                                                                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="window.location.href='/tarefa'">OK</button>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                          
+                                        <% } %>
+                                           
+                                    </tbody>
+                                </table>
+                                <% } %>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            LISTA DE TAREFAS
+                        </div>
+                        <!-- /.box-footer-->
+                    </div>
+
+                </section>
+            </div>
+            <% include /templates/footer %>
+            <div class="control-sidebar-bg"></div>
+    </div>
+    <% include /templates/scripts %>
+</body>
+
+</html>

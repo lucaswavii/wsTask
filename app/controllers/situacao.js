@@ -17,6 +17,11 @@ module.exports.index = function(application, req, res){
     });
 }
 
+module.exports.pegarFluxos = function( application, req, res ){
+    var parametros = req.params;
+    console.log(parametros)
+}
+
 module.exports.editar = function( application, req, res ){
     
     //if( req.session.usuario == undefined ) {

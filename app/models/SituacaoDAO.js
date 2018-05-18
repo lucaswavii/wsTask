@@ -6,6 +6,7 @@ SituacaoDAO.prototype.listar = function( callback) {
 	this._connection.query('select * from situacao order by id', callback);	
 }
 
+
 SituacaoDAO.prototype.salvar = function( situacao, callback) {	
 	
 	if( !situacao.id ) {

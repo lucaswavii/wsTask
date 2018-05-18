@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <% include /templates/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini"> 
+    
+    <div class="wrapper">   
+        <% include /templates/header %>
+        
+        <div class="content-wrapper">            
+            <section class="content-header">
+                <h1>
+                    Tarefa
+                    <small>ATENDIEMNTO DA TAREFA DE NÚMERO <%= tarefas[0].id %></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Principal</li>
+                </ol>
+            </section>
+            <% function leftPad(value, totalWidth, paddingChar) { %>
+                <%  var length = totalWidth - value.toString().length + 1; %>
+                <%    return Array(length).join(paddingChar || '0') + value; %>
+                <%  }; %>
+                <% var now = new Date() %>
+                <% var hoje = leftPad(now.getDate(), 2) + '/' + leftPad((now.getMonth() + 1), 2) + '/' +  leftPad(now.getFullYear(), 4) %>
+                <% var hora = leftPad(now.getHours(),2) + ":" + leftPad(now.getMinutes(),2) %>
+                <% var hoje = leftPad(now.getFullYear(), 4) + '-' + leftPad((now.getMonth() + 1), 2)  + '-' +   leftPad(now.getDate(), 2)   %>
+                
+                <% function getFormattedDate(date) { %>
+                    <%  var year = date.getFullYear(); %>
+                    <%  var month = (1 + date.getMonth()).toString(); %>
+                    <%  month = month.length > 1 ? month : '0' + month; %>
+                    <%  var day = date.getDate().toString(); %>
+                    <%  day = day.length > 1 ? day : '0' + day; %>
+                    <%  return  year  + '-' + month + '-' + day; %>
+                <% } %>
+         
+            <section class="content">   
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">   
+                            <a class="btn btn-link" data-toggle="modal" data-target="#myModalAtendimento" style="color:rgb(0, 0, 0);" accesskey="N"><i class="fa fa-comments"></i> <u>N</u>ovo Evento</a>                      
+                            <a class="btn btn-link" href="/tarefa" style="color:rgb(0, 0, 0);" accesskey="V"><i class="fa fa-share"></i> <u>V</u>oltar</a>                      
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <label for="exampleInputEmail1">Id</label>
+                                <input type="text" class="form-control" placeholder="id" required="true" readonly="true" value="<%= tarefas[0].id %>">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="exampleInputEmail1">Data</label>
+                                <input type="date" name="data" class="form-control" placeholder="Data" required="true" maxlength="10" value="<%= tarefas[0].data ? getFormattedDate(tarefas[0].data) : hoje %>" readonly="true">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="exampleInputEmail1">Hora</label>
+                                <input type="time" name="hora" class="form-control" placeholder="Hora" required="true" maxlength="5" value="<%= tarefas[0].hora %>" readonly="true">
+                            </div>
+                        
+                            <div class="col-xs-2">
+                                <label>Fluxo</label>
+                                <select class="form-control select2" name="fluxo" style="width: 100%;" disabled="disabled">
+                                    <% for( var e = 0; e < fluxos.length; e++ ) { %>
+                                        <% if( fluxos[e].id == tarefas[0].fluxo ) { %>
+                                        <option value="<%= fluxos[e].id %>"><%= fluxos[e].nome %></option>
+                                        <% } %>
+                                    <% } %>
+                                
+                                </select>
+                            </div>
+                            <div class="col-xs-3">
+                                <label>Situação</label>
+                                <select class="form-control select2" name="situacao" style="width: 100%;" disabled="disabled">
+                                    <% for( var e = 0; e < situacoes.length; e++ ) { %>
+                                        <% if( situacoes[e].id == tarefas[0].situacao ) { %>
+                                        <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
+                                        <% } %>
+                                    <% } %>
+                                
+                                </select>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label>Nível</label>
+                                <select class="form-control select2" name="nivel" style="width: 100%;" disabled="disabled">
+                                    <% for( var e = 0; e < niveis.length; e++ ) { %>
+                                        <% if( niveis[e].id == tarefas[0].nivel ) { %>
+                                        <option value="<%= niveis[e].id %>"><%= niveis[e].nome %></option>
+                                        <% } %>
+                                    <% } %>
+                                
+                                </select>
+                            </div>
+                            
+                            <div class="col-xs-12">
+                                <label for="exampleInputEmail1">Título</label>
+                                <input type="text" name="titulo" class="form-control" placeholder="Descreva o título da tarefa" maxlength="200"  readonly="true"  value="<%= tarefas[0].titulo %>">
+                            </div>
+                        
+                            <div class="col-xs-12">
+                                <label for="exampleInputEmail1">Descrição</label>
+                                <textarea class="form-control" name="descricao", id="descricao"  rows="6"  readonly="true"><%= tarefas[0].descricao %></textarea>
+    
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Usuário Criador</label>
+                                <select class="form-control select2" name="usuario" style="width: 100%;" disabled="disabled">
+                                    <% for( var e = 0; e < usuarios.length; e++ ) { %>
+                                        <% if( usuarios[e].id == tarefas[0].usuario ) { %>
+                                        <option value="<%= usuarios[e].id %>"><%= usuarios[e].nome %></option>
+                                        <% } %>
+                                    <% } %>
+                                
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Cliente</label>
+                                <select class="form-control select2" name="cliente" style="width: 100%;" readonly="true" disabled="disabled">
+                                    <% for( var e = 0; e < pessoas.length; e++ ) { %>
+                                        <% if( pessoas[e].id == tarefas[0].cliente ) { %>
+                                        <option value="<%= pessoas[e].id %>"><%= pessoas[e].nome %></option>
+                                        <% } %>
+                                    <% } %>
+                                
+                                </select>
+                            </div>                            
+                        </div>
+                    </div>
+                    <form role="form" action="/salvarEvento/<%= tarefas[0].id %>" method="POST">
+                        <div class="modal fade" id="myModalAtendimento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" item-width="100%">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">Apontamento de Tarefa</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <label for="exampleInputEmail1">Id</label>
+                                                        <input type="text" class="form-control" placeholder="id" name="tarefa" required="true" readonly="true" value="<%= tarefas[0].id %>">
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <label for="exampleInputEmail1">Data</label>
+                                                        <input type="date" name="data" class="form-control" placeholder="Data" required="true" maxlength="10" value="<%= hoje %>" readonly="true">
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <label for="exampleInputEmail1">Hora</label>
+                                                        <input type="time" name="hora" class="form-control" placeholder="Hora" required="true" maxlength="5" value="<%= hora %>" readonly="true">
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <label>Situação</label>
+                                                        <select class="form-control select2" name="situacao" style="width: 100%;">
+                                                            <% for( var e = 0; e < situacoes.length; e++ ) { %>                                                                
+                                                                <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
+                                                            <% } %>                                                        
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <label>Usuário Criador</label>
+                                                        <select class="form-control select2" name="usuario" style="width: 100%;" disabled="disabled">
+                                                            <% for( var e = 0; e < usuarios.length; e++ ) { %>
+                                                               
+                                                                <option value="<%= usuarios[e].id %>"><%= usuarios[e].nome %></option>
+                                                            <% } %>                                                        
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <label for="exampleInputEmail1">Início</label>
+                                                        <input type="date" name="inicio" class="form-control" placeholder="Data" required="true" maxlength="10" value="<%= hoje %>" readonly="true">
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <label for="exampleInputEmail1">Início Hora</label>
+                                                        <input type="time" name="inicioh" class="form-control" placeholder="Hora" required="true" maxlength="5" value="<%= hora %>" readonly="true">
+                                                    </div>
+                                                   
+                                                    
+                                                    <div class="col-xs-12">
+                                                        <label for="exampleInputEmail1">Descrição</label>
+                                                        <textarea class="form-control" name="descricao", id="descricao"  rows="6"></textarea>
+                            
+                                                    </div>
+                                                     <div class="col-xs-5">
+                                                        <label for="exampleInputEmail1">Fim</label>
+                                                        <input type="date" name="fim" class="form-control" placeholder="Data" required="true" maxlength="10" readonly="true">
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <label for="exampleInputEmail1">Fim Hora</label>
+                                                        <input type="time" name="fimh" class="form-control" placeholder="Hora" required="true" maxlength="5" readonly="true">
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <label for="exampleInputEmail1">Tempo</label>
+                                                        <input type="time" name="tempo" class="form-control" placeholder="Tempo" required="true" maxlength="5" readonly="true">
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </form>
+
+                    
+                    <div class="box-footer">
+                        <h3 class="box-title">                               
+                            APONTAMENTO DA TAREFA
+                        </h3>
+                        <a class="btn btn-primary btn-xs">Novo</a>
+                        <div class="box-body">
+                            
+                            <ul class="timeline">
+
+                                <!-- timeline time label -->
+                                <li class="time-label">
+                                    <span class="bg-red">
+                                        10 Feb. 2014
+                                    </span>
+                                </li>
+                                <!-- /.timeline-label -->
+                            
+                                <!-- timeline item -->
+                                <li>
+                                    <!-- timeline icon -->
+                                    <i class="fa fa-envelope bg-blue"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                            
+                                        <h3 class="timeline-header"><a href="#">Support Team</a> ...</h3>
+                            
+                                        <div class="timeline-body">
+                                            ...
+                                            Content goes here
+                                            <a class="btn btn-primary btn-xs">Read more</a>
+                                        </div>
+                            
+                                        <div class="timeline-footer">
+                                            <a class="btn btn-primary btn-xs">...</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                            
+                                ...
+                            
+                            </ul>
+                        </div>
+                    </div>
+                </div>        
+            </section>        
+        </div>
+         
+        <% include /templates/footer %>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <% include /templates/scripts %>
+</body>
+</html>

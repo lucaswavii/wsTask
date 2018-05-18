@@ -17,6 +17,7 @@ module.exports.index = function(application, req, res){
     });
 }
 
+
 module.exports.editar = function( application, req, res ){
     
     //if( req.session.usuario == undefined ) {

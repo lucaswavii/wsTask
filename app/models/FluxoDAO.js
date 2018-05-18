@@ -27,6 +27,10 @@ FluxoDAO.prototype.excluirFluxos = function( id, callback) {
 	this._connection.query('delete from fluxo_situacao where id = ?', id, callback);	
 }
 
+FluxoDAO.prototype.pegarFluxos = function( fluxo, situacao, callback) {	
+	this._connection.query('select * from fluxo_situacao where fluxo = ? and situacao = ? ', [ fluxo, situacao ], callback);	
+}
+
 FluxoDAO.prototype.editar = function( id, callback) {
 	this._connection.query('select * from fluxo where id = ?', id, callback);
 }

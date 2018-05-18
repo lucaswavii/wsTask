@@ -37,4 +37,8 @@ module.exports = function(application){
     application.get('/fluxo', function(req, res){		
         application.app.controllers.fluxo.index(application, req, res);
     });
+
+    application.get('/tarefa', function(req, res){		
+        application.app.controllers.tarefa.index(application, req, res);
+    });
 }
