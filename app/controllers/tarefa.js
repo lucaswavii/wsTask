@@ -54,7 +54,7 @@ module.exports.editar = function( application, req, res ){
                     situacaoDao.listar(function(error, situacoes){
                         nivelDao.listar(function(error, niveis){
                             usuarioDao.listar(function(error, usuarios){
-                                console.log(tarefas)
+                               
                                 connection.end();
                                 if( error ) {
                                     res.render('evento', { validacao : [ {'msg': error }], tarefas : tarefas, fluxo:fluxo, pessoas: pessoas, fluxos:fluxos, situacoes:situacoes, niveis:niveis, usuarios: usuarios, sessao: {} });

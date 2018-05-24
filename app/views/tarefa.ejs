@@ -102,9 +102,9 @@
                                                             <select class="form-control select2" name="situacao" style="width: 100%;">
                                                                 
                                                                 <% for( var e = 0; e < situacoes.length; e++ ) { %>
-                                                                    <% if ( fluxo.situacoes.indexOf( situacoes[e].id ) >= 0 ) { %>
-                                                                        <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
-                                                                    <% } %>
+                                                                    
+                                                                    <option value="<%= situacoes[e].id %>"><%= situacoes[e].nome %></option>
+                                                                    
                                                                 <% } %>
                                                             
                                                             </select>
