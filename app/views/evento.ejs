@@ -162,7 +162,7 @@
                                                     </div>
                                                     <div class="col-xs-6">
                                                         <label>Usuário Criador</label>
-                                                        <select class="form-control select2" name="usuario" style="width: 100%;" disabled="disabled">
+                                                        <select class="form-control select2" name="usuario" style="width: 100%;" readonly="true">
                                                             <% for( var e = 0; e < usuarios.length; e++ ) { %>
                                                                
                                                                 <option value="<%= usuarios[e].id %>"><%= usuarios[e].nome %></option>
@@ -217,9 +217,9 @@
                         <h3 class="box-title">                               
                             APONTAMENTO DA TAREFA
                         </h3>
-                        <a class="btn btn-primary btn-xs">Novo</a>
+                        
                         <div class="box-body">
-                            
+                            <% if ( eventos.length > 0 ) { %>
                             <ul class="timeline">
 
                                 <!-- timeline time label -->
@@ -255,6 +255,7 @@
                                 ...
                             
                             </ul>
+                            <% } %>
                         </div>
                     </div>
                 </div>        

@@ -15,4 +15,8 @@ module.exports = function(application){
         application.app.controllers.tarefa.excluir(application, req, res);
     });
 
+    application.post('/salvarEvento/:_id', function(req, res){
+        application.app.controllers.tarefa.salvarEvento(application, req, res);
+    });
+
 }

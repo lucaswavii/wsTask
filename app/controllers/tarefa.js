@@ -11,7 +11,8 @@ module.exports.index = function(application, req, res){
     var situacaoDao = new application.app.models.SituacaoDAO(connection);
     var nivelDao = new application.app.models.NivelDAO(connection);
     var usuarioDao = new application.app.models.UsuarioDAO(connection);
-    
+    var eventoDao = new application.app.models.EventoDAO(connection);
+
     tarefaDao.listar(function(error, tarefas){
         pessoaDao.listar(function(error, pessoas){
             fluxoDao.listar(function(error, fluxos){
@@ -46,27 +47,31 @@ module.exports.editar = function( application, req, res ){
     var situacaoDao = new application.app.models.SituacaoDAO(connection);
     var nivelDao = new application.app.models.NivelDAO(connection);
     var usuarioDao = new application.app.models.UsuarioDAO(connection);
+    var eventoDao = new application.app.models.EventoDAO(connection);
 
     tarefaDao.editar( req.params._id, function(error, tarefas){
-        pessoaDao.listar(function(error, pessoas){
-            fluxoDao.listar(function(error, fluxos){
-                fluxoDao.pegarFluxos(  tarefas[0].fluxo, tarefas[0].situacao , function(error, fluxo){
-                    situacaoDao.listar(function(error, situacoes){
-                        nivelDao.listar(function(error, niveis){
-                            usuarioDao.listar(function(error, usuarios){
-                               
-                                connection.end();
-                                if( error ) {
-                                    res.render('evento', { validacao : [ {'msg': error }], tarefas : tarefas, fluxo:fluxo, pessoas: pessoas, fluxos:fluxos, situacoes:situacoes, niveis:niveis, usuarios: usuarios, sessao: {} });
-                                    return;
-                                }
-                                res.render('evento', { validacao : {}, tarefas : tarefas, fluxo:fluxo, pessoas: pessoas, fluxos:fluxos, situacoes:situacoes, niveis:niveis, usuarios: usuarios, sessao: {} });
+        eventoDao.listar(tarefas[0], function(error, eventos){
+           
+            pessoaDao.listar(function(error, pessoas){
+                fluxoDao.listar(function(error, fluxos){
+                    fluxoDao.pegarFluxos(  tarefas[0].fluxo, tarefas[0].situacao , function(error, fluxo){
+                        situacaoDao.listar(function(error, situacoes){
+                            nivelDao.listar(function(error, niveis){
+                                usuarioDao.listar(function(error, usuarios){
+                                
+                                    connection.end();
+                                    if( error ) {
+                                        res.render('evento', { validacao : [ {'msg': error }], tarefas : tarefas, eventos:eventos, fluxo:fluxo, pessoas: pessoas, fluxos:fluxos, situacoes:situacoes, niveis:niveis, usuarios: usuarios, sessao: {} });
+                                        return;
+                                    }
+                                    res.render('evento', { validacao : {}, tarefas : tarefas, eventos:eventos, fluxo:fluxo, pessoas: pessoas, fluxos:fluxos, situacoes:situacoes, niveis:niveis, usuarios: usuarios, sessao: {} });
+                                });
                             });
                         });
                     });
                 });
-            });
-        });        
+            });   
+        });     
     });
 }
 
@@ -153,3 +158,15 @@ module.exports.salvar = function( application, req, res ){
           
 }
 
+module.exports.salvarEvento = function( application, req, res ){
+    var dadosForms = req.body;
+    dadosForms.fim = new Date();
+    dadosForms.fimh = '00:00';
+    dadosForms.tempo = '00:00';
+    var connection = application.config.dbConnection();
+    var eventoDao = new application.app.models.EventoDAO(connection);
+    eventoDao.salvar(dadosForms, function(error, result){
+        console.log(error)
+        res.redirect('/editarTarefa/' + dadosForms.tarefa );
+    });
+}

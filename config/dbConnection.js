@@ -3,11 +3,13 @@ var mysql = require('mysql');
 var connMysql = function() {
 	
 	return mysql.createConnection({
-			host : 'localhost',
+			host : '18.218.132.80',
 			user: 'root',
-			password: '123456',
-			database: 'wstask'
+			password: 'Wa180279',
+			database: 'wsTask'
 	});
+
+	
 }
 
 module.exports = function(){

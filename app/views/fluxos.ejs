@@ -79,7 +79,10 @@
                                                         <%= listaFluxos[i].tipo == 1 ? 'Evento' : listaFluxos[i].tipo == 2 ? 'Início' : 'Fim'  %>
                                                     </td>
                                                 
-                                                    <td>                                                       
+                                                    <td>    
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default-editar-<%= listaFluxos[i].id %>">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>                                                   
                                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-remove-<%= listaFluxos[i].id %>">
                                                             <i class="fa fa-times"></i>
                                                         </button>
@@ -154,7 +157,7 @@
                                                             <% } %>                                                                
                                                         </select>
                                                     </div>                                          
-                                                    <div class="col-xs-6">
+                                                    <div class="col-xs-4">
                                                         <label>Situações</label>
                                                         <select class="form-control select2" multiple="multiple" data-placeholder="Selecione Situações" style="width: 100%;" name="situacoes">
                 
@@ -163,14 +166,20 @@
                                                             <% } %>                                                                
                                                         </select>
                                                     </div>  
-                                                    <div class="col-xs-6">
+                                                    <div class="col-xs-4">
                                                         <label>Tipo</label>
                                                         <select class="form-control"  style="width: 100%;" name="tipo">
                                                             <option value="1">Evento</option>
                                                             <option value="2">Início</option>
                                                             <option value="3">Fim</option>                           
                                                         </select>
-                                                    </div>                                     
+                                                    </div>    
+                                                    
+                                                    <div class="col-xs-4">
+                                                        <label>Ordem</label>
+                                                        <input type="number" name="ordem" class="form-control" required="true" value="<%= situacoes[i].ordem %>">
+                                                                         
+                                                    </div>     
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
